@@ -1,4 +1,3 @@
-<script>
   // Récupération des éléments HTML
   const taskInput = document.getElementById('taskInput');
   const addTaskBtn = document.getElementById('addTaskBtn');
@@ -47,4 +46,4 @@
       addTask();
     }
   });
-</script>
+
