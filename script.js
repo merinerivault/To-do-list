@@ -71,5 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
         addTask();
       }
     });
-  });
+    function enableTaskEditing(taskText) {
+        taskText.addEventListener('dblclick', () => {
+          // Créer un champ de saisie pour modifier la tâche
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = taskText.textContent;
+          input.className = 'form-control';
+      
+          // Remplacer le texte par le champ de saisie
+          taskText.replaceWith(input);
+      
+          // Sauvegarder la modification lorsqu'on perd le focus ou appuie sur Entrée
+          input.addEventListener('blur', () => saveTaskEdit(input, taskText));
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') saveTaskEdit(input, taskText);
+          });
+        });
+      }
+      
+      function saveTaskEdit(input, taskText) {
+        taskText.textContent = input.value.trim() || taskText.textContent;
+        input.replaceWith(taskText);
+      }
+      
+});
   
