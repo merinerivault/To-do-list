@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour ajouter une tâche
     function addTask() {
       const taskValue = taskInput.value.trim();
+
   
       if (taskValue === '') {
         alert('Veuillez entrer une tâche.');
@@ -38,6 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // Ajouter le texte de la tâche
       const taskText = document.createElement('span');
       taskText.textContent = taskValue;
+      
+      // Permettre la modification de la tâche avec un double-clic
+      enableTaskEditing(taskText);
+
   
       // Ajouter le texte et la checkbox dans la div
       taskContainer.appendChild(checkbox);
