@@ -4,28 +4,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTaskBtn = document.getElementById('addTaskBtn');  // Bouton "Ajouter"
     const taskList = document.getElementById('taskList');  // Liste des tâches
   
+    // Charger les tâches depuis le localStorage au démarrage
+    loadTasksFromLocalStorage();
+
     // Fonction pour ajouter une tâche
     function addTask() {
-      const taskValue = taskInput.value.trim(); // Supprime les espaces au début et à la fin
-      taskList.appendChild(li);  // Ajoute la tâche à la liste
-      setTimeout(() => li.classList.add('show'), 10); // Animation d'apparition
-
-      saveTasksToLocalStorage(); // Sauvegarde des tâches dans le localStorage
-
+      const taskValue = taskInput.value.trim();
   
-      if (taskValue === '') { // Vérifie si la tâche est vide
-        alert('Veuillez entrer une tâche.'); // Affiche une alerte si la tâche est vide
+      if (taskValue === '') {
+        alert('Veuillez entrer une tâche.');
         return;
       }
   
-      function loadTasksFromLocalStorage() { // Charge les tâches depuis le localStorage
-        const savedTasks = JSON.parse(localStorage.getItem('tasks')) || []; // Récupère les tâches sauvegardées depuis le localStorage
-        savedTasks.forEach(task => { // Pour chaque tâche sauvegardée
-          const li = createTaskElement(task.text, task.completed); // Crée un élément <li> pour la tâche
-          taskList.appendChild(li); // Ajoute l'élément <li> à la liste des tâches
-        });
-      }
-      
+      const li = createTaskElement(taskValue); // Crée un élément <li> pour la tâche
+      taskList.appendChild(li); // Ajoute le <li> à la liste des tâches
+  
+      setTimeout(() => li.classList.add('show'), 10); // Animation d'apparition
+      saveTasksToLocalStorage(); // Sauvegarde après ajout
+      taskInput.value = ''; // Efface le champ de saisie
+    }
+
       function createTaskElement(taskValue, completed = false) {  // Crée un élément <li> pour une tâche
         const li = document.createElement('li');   // Crée un élément <li>
         li.className = 'list-group-item d-flex justify-content-between align-items-center';  // Ajoute des classes CSS pour la mise en page
@@ -79,16 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return li;   // Retourne le <li> créé
     }
   
-    // Ajouter un événement au bouton "Ajouter"
-    addTaskBtn.addEventListener('click', addTask);  // Ajoute un événement pour ajouter une tâche lorsque le bouton "Ajouter" est cliqué
-  
-    // Permettre l'ajout avec la touche "Entrée"
-    taskInput.addEventListener('keypress', (e) => {   // Ajoute un événement pour ajouter une tâche lorsque la touche "Entrée" est pressée
-      if (e.key === 'Enter') {   // Vérifie si la touche pressée est "Entrée"
-        addTask();   // Ajoute la tâche
-      }
-    });
-    function enableTaskEditing(taskText) {   // Permet la modification de la tâche avec un double-clic
+
+      function enableTaskEditing(taskText) {   // Permet la modification de la tâche avec un double-clic
         taskText.addEventListener('dblclick', () => {    // Ajoute un événement pour permettre la modification de la tâche avec un double-clic
           // Créer un champ de saisie pour modifier la tâche
           const input = document.createElement('input');  // Crée un champ de saisie pour modifier la tâche
@@ -112,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.replaceWith(taskText);   // Remplace le champ de saisie par le texte de la tâche
         saveTasksToLocalStorage(); // Sauvegarde après modification du texte
       }
+ 
       function saveTasksToLocalStorage() {    // Sauvegarde les tâches dans le localStorage
         const tasks = [];    // Crée un tableau pour stocker les tâches
         document.querySelectorAll('#taskList li').forEach(li => {   // Parcourt toutes les tâches
@@ -121,6 +112,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         localStorage.setItem('tasks', JSON.stringify(tasks));    // Sauvegarde le tableau dans le localStorage
       }
-       
+
+        // Charger les tâches depuis le localStorage
+      function loadTasksFromLocalStorage() {
+        const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+          savedTasks.forEach(task => {
+        const li = createTaskElement(task.text, task.completed);
+          taskList.appendChild(li);
+        setTimeout(() => li.classList.add('show'), 10); // Animation d'apparition
+        });
+      }
+
+        // Écouter les événements sur le bouton "Ajouter"
+      addTaskBtn.addEventListener('click', addTask);
+
+        // Permettre l'ajout avec la touche "Entrée"
+      taskInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          addTask();
+        }
+        });
 });
+
   
