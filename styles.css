@@ -1,0 +1,76 @@
+body {
+    background-color: #f8f9fa; /* Couleur claire pour le fond */
+    color: #333; /* Texte principal */
+    font-family: 'Roboto', sans-serif; /* Police moderne */
+  }
+  
+  h1 {
+    color: #007bff; /* Bleu Bootstrap pour le titre */
+  }
+  
+  .list-group-item {
+    background-color: #ffffff; /* Fond blanc pour les tâches */
+  }
+  
+
+/* Ajoute un léger effet d'ombre sur chaque tâche */
+.list-group-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* Agrandir légèrement la tâche au survol */
+  .list-group-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Personnaliser le bouton "Ajouter" */
+#addTaskBtn {
+    background-color: #4caf50; /* Vert */
+    border-color: #4caf50;
+    transition: background-color 0.3s ease;
+  }
+  
+  #addTaskBtn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Personnaliser le bouton "Supprimer" */
+  .btn-danger {
+    background-color: #ff4d4d; /* Rouge vif */
+    border-color: #ff4d4d;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-danger:hover {
+    background-color: #ff1a1a;
+  }
+
+  /* Tâches terminées : style barré et couleur grisée */
+.text-decoration-line-through {
+    color: #aaa;
+    font-style: italic;
+  }
+
+/* Apparition douce des tâches */
+.list-group-item {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .list-group-item.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Disparition douce des tâches */
+  .list-group-item.hide {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
