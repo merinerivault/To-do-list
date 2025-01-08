@@ -1,104 +1,126 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Récupération des éléments HTML
-    const taskInput = document.getElementById('taskInput');
-    const addTaskBtn = document.getElementById('addTaskBtn');
-    const taskList = document.getElementById('taskList');
+    const taskInput = document.getElementById('taskInput');  // Champ de saisie pour la tâche
+    const addTaskBtn = document.getElementById('addTaskBtn');  // Bouton "Ajouter"
+    const taskList = document.getElementById('taskList');  // Liste des tâches
   
     // Fonction pour ajouter une tâche
     function addTask() {
-      const taskValue = taskInput.value.trim();
+      const taskValue = taskInput.value.trim(); // Supprime les espaces au début et à la fin
+      taskList.appendChild(li);  // Ajoute la tâche à la liste
+      setTimeout(() => li.classList.add('show'), 10); // Animation d'apparition
+
+      saveTasksToLocalStorage(); // Sauvegarde des tâches dans le localStorage
 
   
-      if (taskValue === '') {
-        alert('Veuillez entrer une tâche.');
+      if (taskValue === '') { // Vérifie si la tâche est vide
+        alert('Veuillez entrer une tâche.'); // Affiche une alerte si la tâche est vide
         return;
       }
   
-      // Créer un nouvel élément <li>
-      const li = document.createElement('li');
-      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      function loadTasksFromLocalStorage() { // Charge les tâches depuis le localStorage
+        const savedTasks = JSON.parse(localStorage.getItem('tasks')) || []; // Récupère les tâches sauvegardées depuis le localStorage
+        savedTasks.forEach(task => { // Pour chaque tâche sauvegardée
+          const li = createTaskElement(task.text, task.completed); // Crée un élément <li> pour la tâche
+          taskList.appendChild(li); // Ajoute l'élément <li> à la liste des tâches
+        });
+      }
+      
+      function createTaskElement(taskValue, completed = false) {  // Crée un élément <li> pour une tâche
+        const li = document.createElement('li');   // Crée un élément <li>
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';  // Ajoute des classes CSS pour la mise en page
   
       // Créer une div pour contenir la checkbox et le texte
-      const taskContainer = document.createElement('div');
-      taskContainer.className = 'd-flex align-items-center';
+      const taskContainer = document.createElement('div');  // Crée une div pour contenir la checkbox et le texte
+      taskContainer.className = 'd-flex align-items-center';  // Ajoute des classes CSS pour la mise en page
   
       // Ajouter une checkbox
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.className = 'form-check-input me-2';
+      const checkbox = document.createElement('input');  // Crée une checkbox
+      checkbox.type = 'checkbox';   // Définit le type de l'élément comme une checkbox
+      checkbox.className = 'form-check-input me-2';  // Ajoute des classes CSS pour la mise en page
+      checkbox.checked = completed;  // Définit la checkbox comme cochée si la tâche est terminée
   
       // Ajouter un événement pour barrer le texte lorsqu'il est coché
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          li.classList.add('text-decoration-line-through');
-        } else {
-          li.classList.remove('text-decoration-line-through');
-        }
+      checkbox.addEventListener('change', () => {   // Ajoute un événement pour barrer le texte lorsqu'il est coché
+        li.classList.toggle('text-decoration-line-through', checkbox.checked);   // Ajoute une classe CSS pour barrer le texte lorsqu'il est coché
+        saveTasksToLocalStorage();  // Sauvegarde les tâches dans le localStorage après avoir modifié la checkbox
       });
   
       // Ajouter le texte de la tâche
-      const taskText = document.createElement('span');
-      taskText.textContent = taskValue;
+      const taskText = document.createElement('span');  // Crée un élément <span> pour le texte de la tâche
+      taskText.textContent = taskValue;  // Définit le texte de la tâche
       
       // Permettre la modification de la tâche avec un double-clic
       enableTaskEditing(taskText);
 
   
       // Ajouter le texte et la checkbox dans la div
-      taskContainer.appendChild(checkbox);
-      taskContainer.appendChild(taskText);
+      taskContainer.appendChild(checkbox);  // Ajoute la checkbox à la div
+      taskContainer.appendChild(taskText);  // Ajoute le texte de la tâche à la div
   
       // Ajouter le bouton "Supprimer"
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'btn btn-danger btn-sm';
-      deleteBtn.textContent = 'Supprimer';
-      deleteBtn.addEventListener('click', () => {
-        li.remove();
+      const deleteBtn = document.createElement('button');  // Crée un bouton "Supprimer"
+      deleteBtn.className = 'btn btn-danger btn-sm';   // Ajoute des classes CSS pour la mise en page
+      deleteBtn.textContent = 'Supprimer';   // Définit le texte du bouton "Supprimer"
+      deleteBtn.addEventListener('click', () => {   // Ajoute un événement pour supprimer la tâche lorsque le bouton "Supprimer" est cliqué
+        li.classList.remove('show');   // Supprime la tâche de la liste
+        setTimeout(() => {   // Supprime la tâche après un court délai
+          li.remove();    // Supprime la tâche de la liste
+          saveTasksToLocalStorage(); // Sauvegarde après la suppression
+        }, 300);   // Délai de 300 millisecondes pour la suppression
       });
   
       // Ajouter la div et le bouton "Supprimer" au <li>
-      li.appendChild(taskContainer);
-      li.appendChild(deleteBtn);
+      li.appendChild(taskContainer);   // Ajoute la div à la liste
+      li.appendChild(deleteBtn);   // Ajoute le bouton "Supprimer" à la liste
   
       // Ajouter le <li> à la liste des tâches
-      taskList.appendChild(li);
-  
-      // Effacer le champ de saisie
-      taskInput.value = '';
+      if (completed) li.classList.add('text-decoration-line-through');   // Ajoute une classe CSS pour barrer le texte si la tâche est terminée
+      return li;   // Retourne le <li> créé
     }
   
     // Ajouter un événement au bouton "Ajouter"
-    addTaskBtn.addEventListener('click', addTask);
+    addTaskBtn.addEventListener('click', addTask);  // Ajoute un événement pour ajouter une tâche lorsque le bouton "Ajouter" est cliqué
   
     // Permettre l'ajout avec la touche "Entrée"
-    taskInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        addTask();
+    taskInput.addEventListener('keypress', (e) => {   // Ajoute un événement pour ajouter une tâche lorsque la touche "Entrée" est pressée
+      if (e.key === 'Enter') {   // Vérifie si la touche pressée est "Entrée"
+        addTask();   // Ajoute la tâche
       }
     });
-    function enableTaskEditing(taskText) {
-        taskText.addEventListener('dblclick', () => {
+    function enableTaskEditing(taskText) {   // Permet la modification de la tâche avec un double-clic
+        taskText.addEventListener('dblclick', () => {    // Ajoute un événement pour permettre la modification de la tâche avec un double-clic
           // Créer un champ de saisie pour modifier la tâche
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.value = taskText.textContent;
-          input.className = 'form-control';
+          const input = document.createElement('input');  // Crée un champ de saisie pour modifier la tâche
+          input.type = 'text';   // Définit le type de l'élément comme un champ de saisie
+          input.value = taskText.textContent;   // Définit la valeur du champ de saisie avec le texte de la tâche
+          input.className = 'form-control';   // Ajoute des classes CSS pour la mise en page
       
           // Remplacer le texte par le champ de saisie
           taskText.replaceWith(input);
       
           // Sauvegarder la modification lorsqu'on perd le focus ou appuie sur Entrée
-          input.addEventListener('blur', () => saveTaskEdit(input, taskText));
-          input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') saveTaskEdit(input, taskText);
+          input.addEventListener('blur', () => saveTaskEdit(input, taskText));  // Sauvegarde la modification lorsqu'on perd le focus ou appuie sur Entrée
+          input.addEventListener('keypress', (e) => {   // Sauvegarde la modification lorsqu'on perd le focus ou appuie sur Entrée
+            if (e.key === 'Enter') saveTaskEdit(input, taskText);   // Sauvegarde la modification lorsqu'on perd le focus ou appuie sur Entrée
           });
         });
       }
       
-      function saveTaskEdit(input, taskText) {
-        taskText.textContent = input.value.trim() || taskText.textContent;
-        input.replaceWith(taskText);
+      function saveTaskEdit(input, taskText) {    // Sauvegarde la modification lorsqu'on perd le focus ou appuie sur Entrée
+        taskText.textContent = input.value.trim() || taskText.textContent;   // Met à jour le texte de la tâche avec la valeur du champ de saisie
+        input.replaceWith(taskText);   // Remplace le champ de saisie par le texte de la tâche
+        saveTasksToLocalStorage(); // Sauvegarde après modification du texte
       }
-      
+      function saveTasksToLocalStorage() {    // Sauvegarde les tâches dans le localStorage
+        const tasks = [];    // Crée un tableau pour stocker les tâches
+        document.querySelectorAll('#taskList li').forEach(li => {   // Parcourt toutes les tâches
+          const taskText = li.querySelector('span').textContent;   // Récupère le texte de la tâche
+          const isCompleted = li.querySelector('input[type="checkbox"]').checked;    // Récupère l'état de la tâche (terminée ou non)
+          tasks.push({ text: taskText, completed: isCompleted });    // Ajoute la tâche au tableau
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));    // Sauvegarde le tableau dans le localStorage
+      }
+       
 });
   
