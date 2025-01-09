@@ -13,3 +13,32 @@ const userSchema = new mongoose.Schema({    // Crée un nouveau schéma utilisat
 const User = mongoose.model('User', userSchema);   
 
 module.exports = User;   // Exporte le modèle utilisateur pour qu'il puisse être utilisé dans d'autres parties de ton application
+
+// Fonction pour créer un nouvel utilisateur
+async function createUser(data) {
+    const user = new User(data);
+    await user.save();
+    return user;
+}
+
+// Fonction pour Lire tous les utilisateurs 
+async function getAllUsers() {
+    return await User.find();
+}
+
+// Fonction pour Lire un utilisateur par son ID
+async function getUserById(id) {
+    return await User.findById(id);
+}
+
+
+// Fonction pour mettre à jour un utilisateur
+async function updateUser(id, updates) {
+    return await User.findByIdAndUpdate(id, updates, { new: true });
+}
+
+// Fonction pour supprimer un utilisateur
+async function deleteUser(id) {
+    return await User.findByIdAndDelete(id);
+}
+
