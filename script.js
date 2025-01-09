@@ -1,3 +1,5 @@
+//Debut Frontend
+
 document.addEventListener('DOMContentLoaded', () => {
     // Récupération des éléments HTML
     const taskInput = document.getElementById('taskInput');  // Champ de saisie pour la tâche
@@ -133,5 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         });
 });
+
+// Fin front end 
 
   
