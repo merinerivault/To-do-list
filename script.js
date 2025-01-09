@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
         // Charger les tâches depuis le localStorage
-      function loadTasksFromLocalStorage() {
+      function loadTasksFromLocalStorage() {   // Charger les tâches depuis le localStorage
         const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
           savedTasks.forEach(task => {
         const li = createTaskElement(task.text, task.completed);

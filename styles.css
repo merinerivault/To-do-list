@@ -1,17 +1,23 @@
 body {
-    background-color: #f8f9fa; /* Couleur claire pour le fond */
+    background-color: #7bbafa; /* Couleur claire pour le fond */
     color: #333; /* Texte principal */
-    font-family: 'Roboto', sans-serif; /* Police moderne */
+    font-family: 'Didact Gothic', sans-serif; /* Police moderne */
   }
   
   h1 {
-    color: #007bff; /* Bleu Bootstrap pour le titre */
+    color: #000000d0; /* Bleu Bootstrap pour le titre */
+    font-family: 'Didact Gothic', sans-serif; /* Police moderne */
   }
   
   .list-group-item {
-    background-color: #ffffff; /* Fond blanc pour les tâches */
+    background-color: #ffff92; /* Fond blanc pour les tâches */
   }
   
+  .didact-gothic-regular {
+    font-family: "Didact Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
 
 /* Ajoute un léger effet d'ombre sur chaque tâche */
 .list-group-item {
@@ -28,31 +34,32 @@ body {
   }
 
   /* Personnaliser le bouton "Ajouter" */
-#addTaskBtn {
-    background-color: #4caf50; /* Vert */
-    border-color: #4caf50;
+  #addTaskBtn {
+    background-color: #ed2a95; 
+    border-color: #ed2a95;
     transition: background-color 0.3s ease;
   }
   
   #addTaskBtn:hover {
-    background-color: #45a049;
+    background-color: #ed2a95;
   }
   
   /* Personnaliser le bouton "Supprimer" */
   .btn-danger {
-    background-color: #ff4d4d; /* Rouge vif */
-    border-color: #ff4d4d;
+    background-color: #ed2a95; 
+    border-color: #ed2a95;
     transition: background-color 0.3s ease;
   }
   
   .btn-danger:hover {
-    background-color: #ff1a1a;
+    background-color: #0627ce;
+    border-color: #7bbafa;
   }
 
   /* Tâches terminées : style barré et couleur grisée */
 .text-decoration-line-through {
     color: #aaa;
-    font-style: italic;
+    font-family: 'Didact Gothic', sans-serif; /* Police moderne */;
   }
 
 /* Apparition douce des tâches */
