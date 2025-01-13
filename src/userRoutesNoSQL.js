@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const User = require('./userModelNoSQL');
 
-// Créer un utilisateur
+// Route pour créer un utilisateur
 router.post('/nosql/users', async (req, res) => {
     try {
-        const user = await User.create(req.body);
+        const { username, email, password } = req.body;
+        const user = await User.create({ username, email, password });
         res.status(201).json(user);
     } catch (err) {
         res.status(500).json({ error: err.message });
