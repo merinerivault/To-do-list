@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('./userModelNoSQL');
 
 // Route pour créer un utilisateur
-router.post('/nosql/users', async (req, res) => {
+router.post('/users', async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const user = await User.create({ username, email, password });
@@ -14,7 +14,7 @@ router.post('/nosql/users', async (req, res) => {
 });
 
 // Lire tous les utilisateurs
-router.get('/nosql/users', async (req, res) => {
+router.get('/users', async (req, res) => {
     try {
         const users = await User.find();
         res.json(users);
@@ -24,7 +24,7 @@ router.get('/nosql/users', async (req, res) => {
 });
 
 // Lire un utilisateur par ID
-router.get('/nosql/users/:id', async (req, res) => {
+router.get('/users/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         res.json(user);
@@ -34,7 +34,7 @@ router.get('/nosql/users/:id', async (req, res) => {
 });
 
 // Mettre à jour un utilisateur
-router.put('/nosql/users/:id', async (req, res) => {
+router.put('/users/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(user);
@@ -44,7 +44,7 @@ router.put('/nosql/users/:id', async (req, res) => {
 });
 
 // Supprimer un utilisateur
-router.delete('/nosql/users/:id', async (req, res) => {
+router.delete('/users/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
         res.json(user);
