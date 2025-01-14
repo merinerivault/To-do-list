@@ -3,8 +3,23 @@ const router = express.Router();
 const User = require('./userModelNoSQL');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const authenticateToken = require('./authMiddleware');
 
-router.post('/users/register', async (req, res) => {
+// Route protégée pour récupérer les informations de l'utilisateur connecté
+router.get('/users/profile', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+        }
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Route pour l'inscription
+router.post('/users/register', async (req, res) => { 
     try {
         const { username, email, password } = req.body;
 
