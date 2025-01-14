@@ -1,6 +1,7 @@
 const express = require('express');  // Importe le module express
 const router = express.Router();    // Crée un routeur Express
 const taskModel = require('./taskModel');   // Importe le modèle de tâche
+const connection = require('./db'); // Connexion MySQL
 
 // Route pour créer une tâche
 router.post('/tasks', (req, res) => {    // Définit une route pour créer une nouvelle tâche
