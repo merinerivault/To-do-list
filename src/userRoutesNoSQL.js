@@ -30,6 +30,10 @@ router.post('/users/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
+        // Vérification des champs obligatoires
+        if (!username || !email || !password) {
+            return res.status(400).json({ error: 'Tous les champs sont requis.' });
+        }
         // Vérifie si l'email existe déjà
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -56,6 +60,11 @@ router.post('/users/register', async (req, res) => {
 router.post('/users/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        // Vérification des champs obligatoires
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email et mot de passe sont requis.' });
+        }        
 
         // Vérifie si l'utilisateur existe
         const user = await User.findOne({ email });
@@ -104,11 +113,15 @@ router.get('/users/:id', authenticateToken, async (req, res) => {
 
 // Mettre à jour un utilisateur
 router.put('/users/:id', authenticateToken, async (req, res) => {
-    if (req.user.userId !== req.params.id) {
-        return res.status(403).json({ error: 'Accès interdit.' });
-    }
-
     try {
+        const { username, email } = req.body;
+
+        // Vérification des champs obligatoires (si nécessaires)
+        if (!username && !email) {
+            return res.status(400).json({ error: 'Au moins un champ est requis pour la mise à jour.' });
+        }
+
+        // Met à jour l'utilisateur
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }).select('-password');
         if (!user) {
             return res.status(404).json({ error: 'Utilisateur non trouvé.' });
@@ -118,6 +131,7 @@ router.put('/users/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 
 // Supprimer un utilisateur
