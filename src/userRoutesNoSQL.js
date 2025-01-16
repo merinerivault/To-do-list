@@ -74,7 +74,7 @@ router.post('/users/login', async (req, res) => {
 // Lire tous les utilisateurs
 router.get('/users', async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select('-password')
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -82,33 +82,53 @@ router.get('/users', async (req, res) => {
 });
 
 // Lire un utilisateur par ID
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:id', authenticateToken, async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).select('-password'); // Exclut le mot de passe
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+        }
         res.json(user);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 // Mettre à jour un utilisateur
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:id', authenticateToken, async (req, res) => {
+    if (req.user.userId !== req.params.id) {
+        return res.status(403).json({ error: 'Accès interdit.' });
+    }
+
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+        }
         res.json(user);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
+
 // Supprimer un utilisateur
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', authenticateToken, async (req, res) => {
+    if (req.user.userId !== req.params.id) {
+        return res.status(403).json({ error: 'Accès interdit.' });
+    }
+
     try {
         const user = await User.findByIdAndDelete(req.params.id);
-        res.json(user);
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+        }
+        res.json({ message: 'Utilisateur supprimé avec succès.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 module.exports = router;
