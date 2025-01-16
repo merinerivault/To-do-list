@@ -3,7 +3,14 @@ const router = express.Router();
 const User = require('./userModelNoSQL');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const authenticateToken = require('./authMiddleware');
+
+// Génération du token
+const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+// Vérification du token dans authMiddleware.js
+const verified = jwt.verify(token, process.env.JWT_SECRET);
 
 // Route protégée pour récupérer les informations de l'utilisateur connecté
 router.get('/users/profile', authenticateToken, async (req, res) => {
