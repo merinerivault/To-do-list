@@ -42,5 +42,8 @@ function deleteTask(id, callback) {
   }
   
   module.exports = {
-    createTask
-};
+    createTask,
+    getAllTasks,
+    updateTask,
+    deleteTask
+  };

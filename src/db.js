@@ -4,7 +4,8 @@ const connection = mysql.createConnection({   // Crée une connexion à la base 
   host: 'localhost',        // Adresse de ta base de données
   user: 'root',             // Nom d'utilisateur MySQL
   password: '',             // Mot de passe MySQL
-  database: 'to-do-list'      // Nom de ta base de données
+  database: 'to-do-list',      // Nom de ta base de données
+  connectTimeout: 10000 // Augmente le délai à 10 secondes
 });
 
 connection.connect(err => {   // Établit la connexion à la base de données

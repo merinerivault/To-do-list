@@ -31,12 +31,36 @@ router.put('/tasks/:id', (req, res) => {    // Définit une route pour mettre à
 });
 
 // Route pour supprimer une tâche
-router.delete('/tasks/:id', (req, res) => {    // Définit une route pour supprimer une tâche existante
-  const { id } = req.params;     // Récupère l'ID de la tâche à supprimer
-  taskModel.deleteTask(id, (err, results) => {     // Appelle la fonction deleteTask du modèle de tâche
-    if (err) return res.status(500).json({ error: err.message });     // Si une erreur survient, retourne une réponse d'erreur
-    res.json(results);
+router.delete('/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(`Tentative de suppression de la tâche avec l'ID : ${id}`);
+
+  taskModel.deleteTask(id, (err, results) => {
+    if (err) {
+      console.error(`Erreur lors de la suppression de la tâche :`, err);
+      return res.status(500).json({
+        status: "error",
+        message: "Une erreur est survenue lors de la suppression.",
+        error: err.message,
+      });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "Tâche non trouvée.",
+        data: null,
+      });
+    }
+
+    res.json({
+      status: "success",
+      message: `Tâche avec l'ID ${id} supprimée avec succès.`,
+      data: null,
+    });
   });
 });
+
+
 
 module.exports = router;   // Exporte le routeur pour qu'il puisse être utilisé dans d'autres parties de ton application
