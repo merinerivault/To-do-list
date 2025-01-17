@@ -53,13 +53,27 @@ router.delete('/tasks/:id', (req, res) => {
       });
     }
 
-    res.json({
-      status: "success",
-      message: `Tâche avec l'ID ${id} supprimée avec succès.`,
-      data: null,
+    // Réinitialise l'index auto-incrémenté après la suppression
+    taskModel.resetAutoIncrement((resetErr) => {
+      if (resetErr) {
+        console.error('Erreur lors de la réinitialisation de l\'auto-incrémentation :', resetErr);
+        return res.status(500).json({
+          status: "error",
+          message: "Erreur lors de la réinitialisation de l'auto-incrémentation.",
+          error: resetErr.message,
+        });
+      }
+
+      // Si tout est réussi
+      res.json({
+        status: "success",
+        message: `Tâche avec l'ID ${id} supprimée avec succès.`,
+        data: null,
+      });
     });
   });
 });
+
 
 
 

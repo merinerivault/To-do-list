@@ -2,6 +2,11 @@
 
 const connection = require('./db');   // Importe la connexion à la base de données depuis le fichier db.js
 
+function resetAutoIncrement(callback) {
+  const query = 'ALTER TABLE tasks AUTO_INCREMENT = 1';
+  connection.query(query, callback);
+}
+
 function createTask(text, callback) {   /// Définit une fonction pour créer une nouvelle tâche
   const query = 'INSERT INTO tasks (text, completed) VALUES (?, ?)';    // Construit une requête SQL pour insérer une nouvelle tâche
   connection.query(query, [text, false], (err, results) => {   // Exécute la requête SQL en utilisant la connexion à la base de données
@@ -45,5 +50,6 @@ function deleteTask(id, callback) {
     createTask,
     getAllTasks,
     updateTask,
-    deleteTask
+    deleteTask,
+    resetAutoIncrement
   };
