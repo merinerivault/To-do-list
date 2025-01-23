@@ -12,6 +12,9 @@ const port = 3000;    // Port sur lequel ton serveur va écouter
 
 app.use(bodyParser.json()); // Pour parser les requêtes JSON
 
+// Servir les fichiers statiques du dossier 'public'
+app.use(express.static('public'));
+
 // Préfixes spécifiques pour éviter les conflits
 app.use('/api/tasks', taskRoutes);    // Routes pour les tâches
 app.use('/api/nosql', userRoutesNoSQL); // Routes pour les utilisateurs NoSQL
