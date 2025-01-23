@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('./userModelNoSQL');
+const User = require('../models/userModelNoSQL');
 const bcrypt = require('bcryptjs');
 
 // Fonction utilitaire pour vérifier les champs requis

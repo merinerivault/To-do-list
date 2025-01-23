@@ -1,6 +1,6 @@
 //Créer les tâches
 
-const connection = require('./db');   // Importe la connexion à la base de données depuis le fichier db.js
+const connection = require('../db/db');   // Importe la connexion à la base de données depuis le fichier db.js
 
 function resetAutoIncrement(callback) {
   const query = 'ALTER TABLE tasks AUTO_INCREMENT = 1';

@@ -1,11 +1,11 @@
 const express = require('express');   // Importe le module express
 const bodyParser = require('body-parser');   // Importe le module body-parser
-const taskRoutes = require('./taskRoutes');    // Routes pour les tâches (SQL)
-const userRoutesNoSQL = require('./userRoutesNoSQL'); // Routes pour les utilisateurs (NoSQL)
+const taskRoutes = require('./routes/taskRoutes');    // Routes pour les tâches (SQL)
+const userRoutesNoSQL = require('./routes/userRoutesNoSQL'); // Routes pour les utilisateurs (NoSQL)
 
 // Import des fichiers de connexion aux bases de données
-const mysqlDb = require('./db'); // Connexion MySQL
-const mongoDb = require('./dbNoSQL'); // Connexion MongoDB
+const mysqlDb = require('./db/db'); // Connexion MySQL
+const mongoDb = require('./db/dbNoSQL'); // Connexion MongoDB
 
 const app = express();    // Crée une instance d'application Express
 const port = 3000;    // Port sur lequel ton serveur va écouter

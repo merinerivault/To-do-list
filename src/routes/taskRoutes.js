@@ -1,10 +1,10 @@
 const express = require('express');  // Importe le module express
 const router = express.Router();    // Crée un routeur Express
-const taskModel = require('./taskModel');   // Importe le modèle de tâche
-const connection = require('./db'); // Connexion MySQL
+const taskModel = require('../models/taskModel');   // Importe le modèle de tâche
+const connection = require('../db/db'); // Connexion MySQL
 
 // Route pour créer une tâche
-router.post('/tasks', (req, res) => {    // Définit une route pour créer une nouvelle tâche
+router.post('/', (req, res) => {    // Définit une route pour créer une nouvelle tâche
   const { text } = req.body;    // Récupère le texte de la requête
   taskModel.createTask(text, (err, id) => {    // Appelle la fonction createTask du modèle de tâche
     if (err) return res.status(500).json({ error: err.message });   // Si une erreur survient, retourne une réponse d'erreur
@@ -13,7 +13,7 @@ router.post('/tasks', (req, res) => {    // Définit une route pour créer une n
 });
 
 // Route pour lire toutes les tâches
-router.get('/tasks', (req, res) => {    // Définit une route pour récupérer toutes les tâches
+router.get('/', (req, res) => {    // Définit une route pour récupérer toutes les tâches
   taskModel.getAllTasks((err, tasks) => {    // Appelle la fonction getAllTasks du modèle de tâche
     if (err) return res.status(500).json({ error: err.message });    // Si une erreur survient, retourne une réponse d'erreur
     res.json(tasks);    // Retourne toutes les tâches
@@ -21,7 +21,7 @@ router.get('/tasks', (req, res) => {    // Définit une route pour récupérer t
 });
 
 // Route pour mettre à jour une tâche
-router.put('/tasks/:id', (req, res) => {    // Définit une route pour mettre à jour une tâche existante
+router.put('/:id', (req, res) => {    // Définit une route pour mettre à jour une tâche existante
   const { id } = req.params;     // Récupère l'ID de la tâche à mettre à jour
   const { text, completed } = req.body;     // Récupère le texte et le statut de la tâche à mettre à jour
   taskModel.updateTask(id, text, completed, (err, results) => {    // Appelle la fonction updateTask du modèle de tâche
@@ -31,7 +31,7 @@ router.put('/tasks/:id', (req, res) => {    // Définit une route pour mettre à
 });
 
 // Route pour supprimer une tâche
-router.delete('/tasks/:id', (req, res) => {
+router.delete('/ :id', (req, res) => {
   const { id } = req.params;
   console.log(`Tentative de suppression de la tâche avec l'ID : ${id}`);
 
